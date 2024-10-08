@@ -5,14 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <h1>我的第一份表單</h1> 
 <form action="check_gen.php" method="get">
-
-    <h1>我的第一份表單</h1>
-
-    輸入表格列數：<input type="text" name="row_num" value="10"/><br/>
-    輸入表格行數：<input type="text" name="col_num" value="3"/><br/>
-    <input type="submit" value="繳交">
-    <input type="reset" value="重新輸入">
+    <fieldset>
+        <legend>填表資訊</legend>
+        性別：<input type="radio" name="gender" value="M">男生
+        <input type="radio" name="gender" value="F">女生
+        <input type="radio" name="gender" value="Anthor">其他<br>
+        科系：<br>
+        <select name="dept">
+            <option value="ee">電子系</option>
+            <option value="csie" selected>資訊工程系</option>
+            <option value="me">機械工程系</option>
+        </select><br>
+        留言：<br>
+        <textarea name="message" rows="5" cols="25">寫上自己的留言。</textarea>
+       
+    </fieldset>
+    <fieldset>
+        <legend>表格參數</legend>
+           
+        輸入表格列數：<input type="text" name="row_num" value="10"/><br/>
+        輸入表格行數：<input type="text" name="col_num" value="3"/><br/>
+        <input type="submit" value="繳交">
+        <input type="reset" value="重新輸入">
+    </fieldset>
+    
 </form>
 <br>
 

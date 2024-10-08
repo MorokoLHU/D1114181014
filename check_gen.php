@@ -1,7 +1,18 @@
 <?php
 $row_num = $_GET['row_num'];
 $col_num = $_GET['col_num'];
-echo'表格大小'. $row_num .'列'. $col_num .'行';
+$gender = $_GET['gender'];
+$dept = $_GET['dept'];
+$message = $_GET['message'];
+echo '表格大小'. $row_num .'列'. $col_num .'行';
+echo '<br>';
+echo '性別為'.$gender.'。';
+echo '<br>';
+echo '科系是'.$dept.'。';
+echo '<br>';
+echo '留言'.$message.'。';
+echo '<br>';
+
 
 ?>
 

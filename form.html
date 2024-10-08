@@ -6,14 +6,19 @@
 </head>
 <body>
 <form action="check.php" method="get">
-
-    <h1>我的第一份表單</h1>
-    <p>(get)</p>
-    輸入帳號：<input type="text" name="acc" value="appspot"/><br/>
-    輸入密碼：<input type="password" name="pass" value="123"/><br/>
-    驗證碼：<input type="text" name="code" value="AAC"/><br/>
-    <input type="submit" value="繳交">
-    <input type="reset" value="重新輸入">
+    <fieldset>
+    <legend>填表資訊</legend>
+        <h1>我的第一份表單</h1>
+        <p>(get)</p>
+        輸入帳號：<input type="text" name="acc" value="appspot"/><br/>
+        輸入密碼：<input type="password" name="pass" value="123"/><br/>
+        性別：<input type="radio" name="gender" value="M">男生
+        <input type="radio" name="gender" value="F">女生
+        <input type="radio" name="gender" value="Anthor">其他<br>
+        驗證碼：<input type="text" name="code" value="AAC"/><br/>
+        <input type="submit" value="繳交">
+        <input type="reset" value="重新輸入">
+    </fieldset>
 </form>
 <br>
 
