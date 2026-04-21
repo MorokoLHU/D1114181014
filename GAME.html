@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Rhythm Master - Pro Edition</title>
+    <link rel="icon" href="RHYTHMicon.png" type="image/png">
+<style>
+body {
+    background: #0a0a0c;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+/* 模式選擇按鈕樣式 */
+.mode-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.mode-btn {
+    flex: 1;
+    padding: 10px;
+    background: #333;
+    color: #888;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin-top: 0 !important; /* 蓋掉通用按鈕的 margin */
+}
+
+.mode-btn.active {
+    background: rgba(0, 255, 255, 0.1);
+    color: cyan;
+    border-color: cyan;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.main-start {
+    background: cyan;
+    color: black;
+    font-size: 1.2em;
+}
+#game-container {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    background: linear-gradient(180deg, #111 0%, #000 100%);
+    border: 3px solid #333;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* 軌道 */
+.lane {
+    position: relative;
+    width: 95px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 底部按鍵字樣 */
+.key-label {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.2);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+/* 判定線 */
+#judge-line {
+    position: absolute;
+    bottom: 80px;
+    width: 100%;
+    height: 20px;
+    background: #fff;
+    box-shadow: 0 0 15px #fff, 0 0 30px cyan;
+    z-index: 10;
+}
+
+/* Note 樣式：變薄且帶光暈 */
+.note {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    border-radius: 2px;
+    z-index: 5;
+}
+.note-0 { background: #ff2d55; box-shadow: 0 0 12px #ff2d55; }
+.note-1 { background: #00ff88; box-shadow: 0 0 12px #00ff88; }
+.note-2 { background: #007aff; box-shadow: 0 0 12px #007aff; }
+.note-3 { background: #ffcc00; box-shadow: 0 0 12px #ffcc00; }
+
+/* 頂部資訊欄 */
+.header-stats {
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    z-index: 20;
+}
+.stat-box {
+    background: rgba(255,255,255,0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* 判定反饋 */
+#feedback {
+    position: absolute;
+    top: 35%;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    font-style: italic;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 30;
+}
+.perfect { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
+.good { color: #00ff88; text-shadow: 0 0 15px #00ff88; }
+.miss { color: #ff2d55; text-shadow: 0 0 15px #ff2d55; }
+
+/* UI 面板 */
+.ui-layer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    z-index: 100;
+}
+.glow-text {
+    font-size: 48px;
+    color: #fff;
+    text-shadow: 0 0 20px cyan;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.menu-card {
+    background: #1a1a1c;
+    padding: 30px;
+    border-radius: 15px;
+    display: flex; flex-direction: column;
+    border: 1px solid #333;
+}
+.hidden { display: none; }
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: cyan;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover { background: #00b3b3; transform: scale(1.05); }
+</style>
+<body>
+
+<div id="game-container">
+    <div class="lane" id="lane-0"><div class="key-label">D</div></div>
+    <div class="lane" id="lane-1"><div class="key-label">F</div></div>
+    <div class="lane" id="lane-2"><div class="key-label">J</div></div>
+    <div class="lane" id="lane-3"><div class="key-label">K</div></div>
+    
+    <div id="judge-line"></div>
+    <div id="feedback"></div>
+
+    <div class="header-stats">
+        <div class="stat-box">SCORE: <span id="score">0</span></div>
+        <div class="stat-box">TIME: <span id="timer">60</span>s</div>
+    </div>
+
+    <div id="start-screen" class="ui-layer">
+	<img src="RHYTHMMASTER.png" alt="Rhythm Master Logo" style="width: 300px; margin-bottom: -20px;">
+        <h1 class="glow-text">RHYTHM<br>MASTER</h1>
+        <div class="menu-card">
+            <label>SELECT MODE</label>
+            <div class="mode-options">
+                <button type="button" class="mode-btn active" data-mode="normal">Normal</button>
+                <button type="button" class="mode-btn" data-mode="ladder">Ladder</button>
+            </div>
+            
+            <label>SET BPM</label>
+            <input type="number" id="bpm-input" value="120" min="40">
+            
+            <button id="start-btn" class="main-start">START GAME</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="ui-layer hidden">
+        <h1 class="glow-text">FINISH</h1>
+        <div class="menu-card">
+            <p>Score: <span id="final-score" class="highlight">0</span></p>
+            <div class="result-detail">
+                <p class="perfect">PERFECT: <span id="count-perfect">0</span></p>
+                <p class="good">GOOD: <span id="count-good">0</span></p>
+                <p class="miss">MISS: <span id="count-miss">0</span></p>
+            </div>
+            <button id="restart-btn">RETRY</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
